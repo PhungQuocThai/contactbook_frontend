@@ -1,0 +1,53 @@
+<template>
+  <div class="page">
+    <h4>Thêm Liên hệ mới</h4>
+
+    <ContactForm
+      :contact="{
+        name: '',
+        email: '',
+        address: '',
+        phone: '',
+        favorite: false,
+      }"
+      @submit:contact="createContact"
+    />
+
+    <p>{{ message }}</p>
+  </div>
+</template>
+
+<script>
+import ContactForm from "@/components/ContactForm.vue";
+import ContactService from "@/services/contact.service";
+
+export default {
+  components: {
+    ContactForm,
+  },
+  data() {
+    return {
+      message: "",
+    };
+  },
+  methods: {
+    async createContact(data) {
+      try {
+        await ContactService.create(data);
+        alert("Liên hệ mới được thêm thành công!");
+        this.$router.push({ name: "contactbook" });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
+.page {
+  text-align: left;
+  max-width: 600px;
+  margin: auto;
+}
+</style>
